@@ -1,4 +1,4 @@
-import { createShare, getShareByPasscode, getShareBySlug, deleteShare } from '../db/queries.js';
+import { createShare, getShareByPasscode, getShareBySlug, markShareAsAccessed, deleteShare } from '../db/queries.js';
 import { uploadFileToR2, buildFileUrl } from '../storage/r2.js';
 import { validateContentType, validateFileSize, validatePasscode } from '../utils/validation.js';
 import { generatePasscode, generateSlug } from '../utils/generators.js';
@@ -113,7 +113,7 @@ async function getShareByPasscodeHandler(passcode, env) {
       return jsonResponse({ error: '口令无效、已被使用或已过期' }, 404);
     }
 
-    await deleteShare(env, share.id, share.file_url);
+    await markShareAsAccessed(env, share.id);
 
     return jsonResponse({
       success: true,
@@ -142,7 +142,7 @@ async function getShareBySlugHandler(slug, env) {
       return jsonResponse({ error: '链接无效、已被使用或已过期' }, 404);
     }
 
-    await deleteShare(env, share.id, share.file_url);
+    await markShareAsAccessed(env, share.id);
 
     return jsonResponse({
       success: true,

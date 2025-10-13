@@ -74,6 +74,24 @@ export async function getShareBySlug(env, slug) {
   return result;
 }
 
+export async function markShareAsAccessed(env, shareId) {
+  await env.DB.prepare(`
+    UPDATE onlinclipboard_com_clipboard_shares
+    SET accessed = 1
+    WHERE id = ?
+  `).bind(shareId).run();
+}
+
+export async function getShareByFileUrl(env, fileUrl) {
+  const stmt = env.DB.prepare(`
+    SELECT id, file_url FROM onlinclipboard_com_clipboard_shares
+    WHERE file_url = ? AND accessed = 1
+    LIMIT 1
+  `).bind(fileUrl);
+
+  return await stmt.first();
+}
+
 export async function deleteShare(env, shareId, fileUrl) {
   await env.DB.prepare(`
     DELETE FROM onlinclipboard_com_clipboard_shares WHERE id = ?
