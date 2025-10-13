@@ -1,18 +1,17 @@
 PRAGMA foreign_keys = ON;
 
-/* 分享表 —— 表名按你的要求带域名前缀 onlinclipboard_com_... */
 CREATE TABLE IF NOT EXISTS onlinclipboard_com_clipboard_shares (
   id           TEXT PRIMARY KEY,
   passcode     TEXT NOT NULL,
   slug         TEXT NOT NULL,
-  content_type TEXT NOT NULL,               -- 'text' | 'image' | 'file'
-  content_text TEXT,                         -- 文本分享时用
-  file_url     TEXT,                         -- 图片/文件分享时用（/api/files/<key>）
+  content_type TEXT NOT NULL,
+  content_text TEXT,
+  file_url     TEXT,
   file_name    TEXT,
   file_size    INTEGER,
   mime_type    TEXT,
-  accessed     INTEGER NOT NULL DEFAULT 0,   -- 0: 未领取；1: 已领取（一次性领取）
-  expires_at   TEXT NOT NULL,                -- ISO8601，例如 2025-10-13T10:00:00.000Z
+  accessed     INTEGER NOT NULL DEFAULT 0,
+  expires_at   TEXT NOT NULL,
   created_at   TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now'))
 );
 
@@ -25,7 +24,6 @@ CREATE INDEX IF NOT EXISTS idx_shares_expires
 CREATE INDEX IF NOT EXISTS idx_shares_accessed
   ON onlinclipboard_com_clipboard_shares (accessed);
 
-/* 评价表 —— 供 /api/reviews 与 /api/reviews/stats 使用 */
 CREATE TABLE IF NOT EXISTS onlinclipboard_com_user_reviews (
   id         TEXT PRIMARY KEY,
   rating     INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
