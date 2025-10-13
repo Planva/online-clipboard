@@ -9,12 +9,12 @@ database_name = "web_server"
 database_id = "7a6c36d2-169d-43de-8288-55376054f92f"
 
 [[r2_buckets]]
-binding = "R2_BUCKET"              # ← 与 src/worker/storage/r2.js 一致
+binding = "R2_BUCKET"
 bucket_name = "onlineclipboard-files"
 
 [[kv_namespaces]]
 binding = "CACHE"
-id = "3050911dfcbe404c8b87871ebba2ed9f"   # ← 不要留 "..."
+id = "3050911dfcbe404c8b87871ebba2ed9f"   # ← 用你的真实 KV Namespace ID，不能是 "..."
 
 [vars]
 MAX_FILE_SIZE = 314572800
@@ -25,7 +25,7 @@ crons = ["0 * * * *"]
 
 [assets]
 directory = "./dist"
-binding = "ASSETS"                 # 与 Worker 里对静态资源的调用一致
+binding = "ASSETS"
 
 [observability]
 enabled = true
