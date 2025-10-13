@@ -1,6 +1,5 @@
 PRAGMA foreign_keys = ON;
 
-/* 即使 0001 被误标为“已执行”，此文件仍会执行，确保表实际存在 */
 CREATE TABLE IF NOT EXISTS onlinclipboard_com_clipboard_shares (
   id           TEXT PRIMARY KEY,
   passcode     TEXT NOT NULL,
