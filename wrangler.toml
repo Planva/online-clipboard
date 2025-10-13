@@ -9,12 +9,12 @@ database_name = "web_server"
 database_id = "7a6c36d2-169d-43de-8288-55376054f92f"
 
 [[r2_buckets]]
-binding = "R2_BUCKET"
+binding = "R2_BUCKET"                    # 代码里就是这个名字
 bucket_name = "onlineclipboard-files"
 
 [[kv_namespaces]]
 binding = "CACHE"
-id = "3050911dfcbe404c8b87871ebba2ed9f"   # ← 用你的真实 KV Namespace ID，不能是 "..."
+id = "3050911dfcbe404c8b87871ebba2ed9f" # 不能是“...”，必须是真实 ID
 
 [vars]
 MAX_FILE_SIZE = 314572800
@@ -25,7 +25,7 @@ crons = ["0 * * * *"]
 
 [assets]
 directory = "./dist"
-binding = "ASSETS"
+binding = "ASSETS"                       # 与 env.ASSETS.fetch 对应
 
 [observability]
 enabled = true
