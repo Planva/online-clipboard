@@ -54,7 +54,7 @@ async function createReviewHandler(request, env) {
     }, 201);
   } catch (error) {
     console.error('Error creating review:', error);
-    return jsonResponse({ error: '提交评价失败' }, 500);
+    return jsonResponse({ error: 'Failed to submit review.' }, 500);
   }
 }
 
@@ -83,7 +83,7 @@ async function getReviewsHandler(request, env) {
     });
   } catch (error) {
     console.error('Error getting reviews:', error);
-    return jsonResponse({ error: '获取评价列表失败' }, 500);
+    return jsonResponse({ error: 'Failed to fetch reviews.' }, 500);
   }
 }
 
@@ -97,7 +97,7 @@ async function getReviewStatsHandler(env) {
     });
   } catch (error) {
     console.error('Error getting review stats:', error);
-    return jsonResponse({ error: '获取评价统计失败' }, 500);
+    return jsonResponse({ error: 'Failed to fetch review statistics.' }, 500);
   }
 }
 

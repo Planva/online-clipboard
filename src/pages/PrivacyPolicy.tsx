@@ -141,7 +141,7 @@ export function PrivacyPolicy({ onBack }: PrivacyPolicyProps) {
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                 For questions about this Privacy Policy or our data practices, please contact us at:
                 <br />
-                <strong>Email:</strong> contact@example.com
+                <strong>Email:</strong> support@onlinclipboard.com
               </p>
             </section>
           </div>

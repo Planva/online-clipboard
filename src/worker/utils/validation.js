@@ -1,12 +1,12 @@
 export function validatePasscode(passcode) {
   if (!passcode || typeof passcode !== 'string') {
-    return { valid: false, error: '口令不能为空' };
+    return { valid: false, error: 'Passcode cannot be empty.' };
   }
 
   const cleaned = passcode.replace(/\D/g, '');
 
   if (cleaned.length !== 4 && cleaned.length !== 6) {
-    return { valid: false, error: '口令必须是4位或6位数字' };
+    return { valid: false, error: 'The passcode must be a 4- or 6-digit number.' };
   }
 
   return { valid: true, passcode: cleaned };
@@ -15,7 +15,7 @@ export function validatePasscode(passcode) {
 export function validateContentType(contentType) {
   const validTypes = ['text', 'image', 'file'];
   if (!validTypes.includes(contentType)) {
-    return { valid: false, error: '无效的内容类型' };
+    return { valid: false, error: 'Invalid content type.' };
   }
   return { valid: true };
 }
@@ -23,7 +23,7 @@ export function validateContentType(contentType) {
 export function validateRating(rating) {
   const numRating = parseInt(rating);
   if (isNaN(numRating) || numRating < 1 || numRating > 5) {
-    return { valid: false, error: '评分必须在1-5之间' };
+    return { valid: false, error: 'Rating must be between 1 and 5.' };
   }
   return { valid: true, rating: numRating };
 }
@@ -31,12 +31,12 @@ export function validateRating(rating) {
 export function validateFileSize(size, maxSize = 300 * 1024 * 1024) {
   const numSize = parseInt(size);
   if (isNaN(numSize) || numSize <= 0) {
-    return { valid: false, error: '无效的文件大小' };
+    return { valid: false, error: 'Invalid file size.' };
   }
   if (numSize > maxSize) {
     return {
       valid: false,
-      error: `文件大小 ${(numSize / 1024 / 1024).toFixed(2)}MB 超过 ${(maxSize / 1024 / 1024).toFixed(0)}MB 限制`
+      error: `File size ${(numSize / 1024 / 1024).toFixed(2)}MB exceeds the ${(maxSize / 1024 / 1024).toFixed(0)}MB limit`
     };
   }
   return { valid: true, size: numSize };

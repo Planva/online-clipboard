@@ -36,7 +36,7 @@ async function createShareHandler(request, env) {
     } else if (contentType.includes('application/json')) {
       shareData = await request.json();
     } else {
-      return jsonResponse({ error: '不支持的Content-Type' }, 400);
+      return jsonResponse({ error: 'Unsupported Content-Type.' }, 400);
     }
 
     const typeValidation = validateContentType(shareData.content_type);
@@ -45,11 +45,11 @@ async function createShareHandler(request, env) {
     }
 
     if (shareData.content_type === 'text' && !shareData.content_text) {
-      return jsonResponse({ error: '文本内容不能为空' }, 400);
+      return jsonResponse({ error: 'Text content cannot be empty.' }, 400);
     }
 
     if ((shareData.content_type === 'image' || shareData.content_type === 'file') && !shareData.file_url) {
-      return jsonResponse({ error: '文件不能为空' }, 400);
+      return jsonResponse({ error: 'File cannot be empty.' }, 400);
     }
 
     const passcode = generatePasscode(shareData.passcode_length || 6);
@@ -68,7 +68,7 @@ async function createShareHandler(request, env) {
     }, 201);
   } catch (error) {
     console.error('Error creating share:', error);
-    return jsonResponse({ error: '创建分享失败' }, 500);
+    return jsonResponse({ error: 'Failed to create share.' }, 500);
   }
 }
 
@@ -110,7 +110,7 @@ async function getShareByPasscodeHandler(passcode, env) {
     const share = await getShareByPasscode(env, validation.passcode);
 
     if (!share) {
-      return jsonResponse({ error: '口令无效、已被使用或已过期' }, 404);
+      return jsonResponse({ error: 'The passcode is invalid, already used, or has expired.' }, 404);
     }
 
     await markShareAsAccessed(env, share.id);
@@ -126,20 +126,20 @@ async function getShareByPasscodeHandler(passcode, env) {
     });
   } catch (error) {
     console.error('Error retrieving share by passcode:', error);
-    return jsonResponse({ error: '获取分享失败' }, 500);
+    return jsonResponse({ error: 'Failed to retrieve share.' }, 500);
   }
 }
 
 async function getShareBySlugHandler(slug, env) {
   try {
     if (!slug || slug.length !== 8) {
-      return jsonResponse({ error: '无效的分享链接' }, 400);
+      return jsonResponse({ error: 'Invalid share link.' }, 400);
     }
 
     const share = await getShareBySlug(env, slug);
 
     if (!share) {
-      return jsonResponse({ error: '链接无效、已被使用或已过期' }, 404);
+      return jsonResponse({ error: 'The link is invalid, already used, or has expired.' }, 404);
     }
 
     await markShareAsAccessed(env, share.id);
@@ -155,7 +155,7 @@ async function getShareBySlugHandler(slug, env) {
     });
   } catch (error) {
     console.error('Error retrieving share by slug:', error);
-    return jsonResponse({ error: '获取分享失败' }, 500);
+    return jsonResponse({ error: 'Failed to retrieve share.' }, 500);
   }
 }
 

@@ -13,7 +13,7 @@ export function TermsOfService({ onBack }: TermsOfServiceProps) {
           className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-6 transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
-          <span>返回</span>
+          <span>Back</span>
         </button>
 
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-8">
@@ -106,7 +106,7 @@ export function TermsOfService({ onBack }: TermsOfServiceProps) {
             <section>
               <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-3">10. Contact Information</h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                For questions about these Terms of Service, please contact us at contact@example.com
+                For questions about these Terms of Service, please contact us at support@onlinclipboard.com
               </p>
             </section>
           </div>

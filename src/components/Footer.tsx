@@ -112,7 +112,7 @@ export function Footer({ onNavigate }: FooterProps) {
         <div className="border-t border-gray-800 pt-6 sm:pt-8 text-center text-xs sm:text-sm">
           <p>&copy; {new Date().getFullYear()} onlinclipboard.com All rights reserved.</p>
           <p className="mt-2 text-gray-400">
-            所有分享内容加密存储，24小时后自动删除 | 接收一次后立即销毁，确保隐私安全
+          All shares are encrypted and removed after 24 hours | One-time access, then instantly wiped for privacy.
           </p>
         </div>
       </div>

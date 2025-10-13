@@ -17,7 +17,7 @@ export function ReviewForm({ onSuccess }: ReviewFormProps) {
     e.preventDefault();
 
     if (rating === 0) {
-      setError('请选择评分');
+      setError('Please select a rating');
       return;
     }
 
@@ -32,14 +32,14 @@ export function ReviewForm({ onSuccess }: ReviewFormProps) {
 
       setRating(0);
       setComment('');
-      alert('感谢您的评价！');
+      alert('Thanks for your review!');
 
       if (onSuccess) {
         onSuccess();
       }
     } catch (err) {
       console.error('Error submitting review:', err);
-      setError(err instanceof Error ? err.message : '提交失败，请稍后重试');
+      setError(err instanceof Error ? err.message : 'Submission failed. Please try again later.');
     } finally {
       setLoading(false);
     }
@@ -47,11 +47,11 @@ export function ReviewForm({ onSuccess }: ReviewFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 sm:p-6">
-      <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4">分享您的体验</h3>
+      <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4">Share feedback</h3>
 
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          评分
+          Rating
         </label>
         <div className="flex gap-1 sm:gap-2">
           {[1, 2, 3, 4, 5].map((star) => (
@@ -77,12 +77,12 @@ export function ReviewForm({ onSuccess }: ReviewFormProps) {
 
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          评价内容（可选）
+          Review (optional)
         </label>
         <textarea
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          placeholder="分享您使用在线剪切板的感受..."
+          placeholder="Share how Online Clipboard worked for you..."
           rows={4}
           maxLength={500}
           className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
@@ -99,11 +99,11 @@ export function ReviewForm({ onSuccess }: ReviewFormProps) {
         disabled={loading}
         className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {loading ? '提交中...' : '提交评价'}
+        {loading ? 'Submitting...' : 'Submit review'}
       </button>
 
       <p className="text-xs text-gray-500 dark:text-gray-400 mt-3 text-center">
-        所有评价均匿名提交，保护您的隐私
+        All reviews are submitted anonymously to protect your privacy.
       </p>
     </form>
   );

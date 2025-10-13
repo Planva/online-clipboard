@@ -12,15 +12,15 @@ export function Navigation({ currentPage, onNavigate }: NavigationProps) {
   const [showThemeMenu, setShowThemeMenu] = useState(false);
 
   const navItems = [
-    { id: 'home', label: '首页' },
+    { id: 'home', label: 'Home' },
     { id: 'faq', label: 'FAQ' },
     { id: 'blog', label: 'Blog' },
   ];
 
   const themeOptions = [
-    { value: 'light' as const, label: '明亮', icon: Sun },
-    { value: 'dark' as const, label: '黑暗', icon: Moon },
-    { value: 'system' as const, label: '跟随系统', icon: Monitor },
+    { value: 'light' as const, label: 'light', icon: Sun },
+    { value: 'dark' as const, label: 'dark', icon: Moon },
+    { value: 'system' as const, label: 'system', icon: Monitor },
   ];
 
   return (
@@ -34,7 +34,7 @@ export function Navigation({ currentPage, onNavigate }: NavigationProps) {
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
               <Clipboard className="w-5 h-5 text-white" />
             </div>
-            <span className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">在线剪切板</span>
+            <span className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">Online Clipboard</span>
           </button>
 
           <div className="flex items-center gap-0.5 sm:gap-1">

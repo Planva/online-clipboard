@@ -26,7 +26,7 @@ export function ShareRetrieve() {
       window.history.replaceState({}, '', window.location.pathname);
     } catch (err) {
       console.error('Error retrieving share:', err);
-      setError(err instanceof Error ? err.message : '获取失败，请重试');
+      setError(err instanceof Error ? err.message : 'Failed to retrieve. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -34,13 +34,13 @@ export function ShareRetrieve() {
 
   const handleRetrieve = async () => {
     if (!passcode.trim()) {
-      setError('请输入口令');
+      setError('Please enter the passcode.');
       return;
     }
 
     const cleanPasscode = passcode.replace(/\D/g, '');
     if (cleanPasscode.length !== 4 && cleanPasscode.length !== 6) {
-      setError('口令必须是4位或6位数字');
+      setError('The passcode must be a 4- or 6-digit number.');
       return;
     }
 
@@ -52,7 +52,7 @@ export function ShareRetrieve() {
       setShare(data);
     } catch (err) {
       console.error('Error retrieving share:', err);
-      setError(err instanceof Error ? err.message : '获取失败，请重试');
+      setError(err instanceof Error ? err.message : 'Failed to retrieve. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -61,7 +61,7 @@ export function ShareRetrieve() {
   const handleCopyText = () => {
     if (share?.content_text) {
       navigator.clipboard.writeText(share.content_text);
-      alert('文本已复制到剪切板');
+      alert('Text copied to clipboard.');
     }
   };
 
@@ -92,8 +92,8 @@ export function ShareRetrieve() {
             {share.content_type === 'image' && <ImageIcon className="w-8 h-8 text-green-600" />}
             {share.content_type === 'file' && <File className="w-8 h-8 text-green-600" />}
           </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">获取成功</h2>
-          <p className="text-sm text-gray-600">此内容已被销毁，无法再次访问</p>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">Retrieved Successfully</h2>
+          <p className="text-sm text-gray-600">This content has been destroyed and can’t be accessed again.</p>
         </div>
 
         {share.content_type === 'text' && share.content_text && (
@@ -108,7 +108,7 @@ export function ShareRetrieve() {
               className="w-full py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium flex items-center justify-center gap-2"
             >
               <Copy className="w-5 h-5" />
-              <span>复制文本</span>
+              <span>Copy text</span>
             </button>
           </div>
         )}
@@ -117,7 +117,7 @@ export function ShareRetrieve() {
           <div className="mb-6">
             <img
               src={share.file_url}
-              alt="分享的图像"
+              alt="Shared image"
               className="w-full rounded-xl mb-4"
             />
             <button
@@ -125,7 +125,7 @@ export function ShareRetrieve() {
               className="w-full py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium flex items-center justify-center gap-2"
             >
               <Download className="w-5 h-5" />
-              <span>下载图像</span>
+              <span>Download image</span>
             </button>
           </div>
         )}
@@ -152,7 +152,7 @@ export function ShareRetrieve() {
               className="w-full py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium flex items-center justify-center gap-2"
             >
               <Download className="w-5 h-5" />
-              <span>下载文件</span>
+              <span>Download file</span>
             </button>
           </div>
         )}
@@ -161,7 +161,7 @@ export function ShareRetrieve() {
           onClick={handleReset}
           className="w-full py-3 bg-gray-100 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-200 transition-colors font-medium"
         >
-          完成
+          Done
         </button>
       </div>
     );
@@ -169,18 +169,18 @@ export function ShareRetrieve() {
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 max-w-md w-full">
-      <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6">获取分享</h2>
+      <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6">Retrieve Share</h2>
 
       <div className="mb-6">
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          输入提取口令
+          Enter passcode
         </label>
         <input
           type="text"
           value={passcode}
           onChange={(e) => setPasscode(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleRetrieve()}
-          placeholder="输入4位或6位数字口令"
+          placeholder="Enter a 4- or 6-digit numeric passcode"
           className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-xl sm:text-2xl font-mono tracking-wider bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
           maxLength={7}
         />
@@ -194,12 +194,12 @@ export function ShareRetrieve() {
         disabled={loading}
         className="w-full py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {loading ? '获取中...' : '获取内容'}
+        {loading ? 'Retrieving...' : 'Retrieve content'}
       </button>
 
       <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-xl">
         <p className="text-sm text-amber-800">
-          <strong>提示：</strong>每个分享只能获取一次，获取后将立即销毁
+          <strong>Tip:</strong> Each share can be retrieved only once; it will be destroyed immediately after retrieval.
         </p>
       </div>
     </div>

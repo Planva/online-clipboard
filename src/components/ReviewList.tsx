@@ -44,9 +44,9 @@ export function ReviewList({ limit = 10, onViewAll }: ReviewListProps) {
     const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
 
     if (diffInHours < 24) {
-      return `${diffInHours}小时前`;
+      return `${diffInHours}hours ago`;
     } else if (diffInHours < 24 * 7) {
-      return `${Math.floor(diffInHours / 24)}天前`;
+      return `${Math.floor(diffInHours / 24)}days ago`;
     } else {
       return date.toLocaleDateString('zh-CN');
     }
@@ -55,7 +55,7 @@ export function ReviewList({ limit = 10, onViewAll }: ReviewListProps) {
   if (loading) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-500 dark:text-gray-400">加载中...</p>
+        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
       </div>
     );
   }
@@ -65,7 +65,7 @@ export function ReviewList({ limit = 10, onViewAll }: ReviewListProps) {
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 sm:p-6">
         <div className="flex items-center justify-between mb-4 sm:mb-6">
           <div>
-            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">用户评价</h3>
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">User Reviews</h3>
             {stats.total > 0 && (
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-1">
@@ -74,7 +74,7 @@ export function ReviewList({ limit = 10, onViewAll }: ReviewListProps) {
                     {stats.average.toFixed(1)}
                   </span>
                 </div>
-                <span className="text-sm sm:text-base text-gray-600 dark:text-gray-400">基于 {stats.total} 条评价</span>
+                <span className="text-sm sm:text-base text-gray-600 dark:text-gray-400">Based on {stats.total} reviews</span>
               </div>
             )}
           </div>
@@ -83,14 +83,14 @@ export function ReviewList({ limit = 10, onViewAll }: ReviewListProps) {
               onClick={onViewAll}
               className="flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors"
             >
-              <span>查看全部</span>
+              <span>View all</span>
               <ChevronRight className="w-5 h-5" />
             </button>
           )}
         </div>
 
         {reviews.length === 0 ? (
-          <p className="text-gray-500 dark:text-gray-400 text-center py-8">暂无评价，成为第一个评价的用户吧！</p>
+          <p className="text-gray-500 dark:text-gray-400 text-center py-8">No reviews yet—be the first to leave one!</p>
         ) : (
           <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-4 -mx-4 px-4 sm:mx-0 sm:px-0">
             {reviews.map((review) => (
@@ -121,7 +121,7 @@ export function ReviewList({ limit = 10, onViewAll }: ReviewListProps) {
                   </p>
                 )}
                 {!review.comment && (
-                  <p className="text-gray-400 dark:text-gray-500 text-sm italic">用户未留下评价内容</p>
+                  <p className="text-gray-400 dark:text-gray-500 text-sm italic">This user didn’t leave any review content.</p>
                 )}
               </div>
             ))}

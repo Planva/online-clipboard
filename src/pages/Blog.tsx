@@ -13,7 +13,7 @@ export function Blog({ onBack }: BlogProps) {
           className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-6 transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
-          <span>返回</span>
+          <span>Back</span>
         </button>
 
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-8">
@@ -35,9 +35,9 @@ export function Blog({ onBack }: BlogProps) {
                 />
               </svg>
             </div>
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-3">即将推出</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-3">Coming Soon</h2>
             <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto">
-              我们正在准备精彩的博客内容，包括使用技巧、安全指南和产品更新。敬请期待！
+              We’re preparing great blog content—including tips, security guides, and product updates. Stay tuned!
             </p>
           </div>
         </div>

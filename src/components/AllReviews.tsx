@@ -68,7 +68,7 @@ export function AllReviews({ onBack }: AllReviewsProps) {
 
         <div className="grid sm:grid-cols-2 gap-4 sm:gap-8 mb-6 sm:mb-8">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-4">所有评价</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-4">All Reviews</h2>
             {stats.total > 0 && (
               <div className="space-y-4">
                 <div className="flex items-center gap-4">
@@ -88,7 +88,7 @@ export function AllReviews({ onBack }: AllReviewsProps) {
                         />
                       ))}
                     </div>
-                    <p className="text-gray-600 dark:text-gray-400">基于 {stats.total} 条评价</p>
+                    <p className="text-gray-600 dark:text-gray-400">Based on {stats.total} reviews</p>
                   </div>
                 </div>
               </div>
@@ -98,7 +98,7 @@ export function AllReviews({ onBack }: AllReviewsProps) {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Filter className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-              <h3 className="font-semibold text-gray-900 dark:text-white">评分分布</h3>
+              <h3 className="font-semibold text-gray-900 dark:text-white">Rating Distribution</h3>
             </div>
             <div className="space-y-2">
               {[5, 4, 3, 2, 1].map((rating, idx) => {
@@ -132,7 +132,7 @@ export function AllReviews({ onBack }: AllReviewsProps) {
                 onClick={() => setFilterRating(null)}
                 className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 mt-3"
               >
-                清除筛选
+                Clear Filters
               </button>
             )}
           </div>
@@ -141,7 +141,7 @@ export function AllReviews({ onBack }: AllReviewsProps) {
 
       {loading ? (
         <div className="text-center py-8">
-          <p className="text-gray-500 dark:text-gray-400">加载中...</p>
+          <p className="text-gray-500 dark:text-gray-400">Loading...</p>
         </div>
       ) : reviews.length === 0 ? (
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 sm:p-8 text-center">
@@ -176,7 +176,7 @@ export function AllReviews({ onBack }: AllReviewsProps) {
               {review.comment ? (
                 <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{review.comment}</p>
               ) : (
-                <p className="text-gray-400 dark:text-gray-500 italic">用户未留下评价内容</p>
+                <p className="text-gray-400 dark:text-gray-500 italic">This user didn’t leave any review content.</p>
               )}
             </div>
           ))}
