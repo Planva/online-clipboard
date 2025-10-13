@@ -12,6 +12,7 @@ import { PrivacyPolicy } from './pages/PrivacyPolicy';
 import { FAQ } from './pages/FAQ';
 import { Blog } from './pages/Blog';
 import { FAQSection } from './components/FAQSection';
+import { SEO } from './components/SEO';
 
 type Mode = 'create' | 'retrieve';
 type Page = 'home' | 'all-reviews' | 'terms' | 'privacy' | 'faq' | 'blog';
@@ -78,6 +79,11 @@ function App() {
   if (page === 'terms') {
     return (
       <>
+        <SEO
+          title="Terms of Service - OnlinClipboard"
+          description="Terms of service for OnlinClipboard. Free online clipboard for temporary file sharing, text sharing, and cross-device clipboard sync."
+          canonical="https://onlinclipboard.com/terms"
+        />
         <Navigation currentPage={page} onNavigate={handleNavigate} />
         <TermsOfService onBack={handleBackToHome} />
         <Footer onNavigate={handleNavigate} />
@@ -88,6 +94,11 @@ function App() {
   if (page === 'privacy') {
     return (
       <>
+        <SEO
+          title="Privacy Policy - OnlinClipboard"
+          description="Privacy policy for OnlinClipboard. Learn how we protect your data with self-destruct links, encrypted storage, and no-login anonymous sharing."
+          canonical="https://onlinclipboard.com/privacy"
+        />
         <Navigation currentPage={page} onNavigate={handleNavigate} />
         <PrivacyPolicy onBack={handleBackToHome} />
         <Footer onNavigate={handleNavigate} />
@@ -98,6 +109,11 @@ function App() {
   if (page === 'faq') {
     return (
       <>
+        <SEO
+          title="FAQ - Online Clipboard Questions Answered"
+          description="Frequently asked questions about OnlinClipboard. Learn how to share text online, paste images, transfer files, and use clipboard sync across devices."
+          canonical="https://onlinclipboard.com/faq"
+        />
         <Navigation currentPage={page} onNavigate={handleNavigate} />
         <FAQ onBack={handleBackToHome} />
         <Footer onNavigate={handleNavigate} />
@@ -108,6 +124,11 @@ function App() {
   if (page === 'blog') {
     return (
       <>
+        <SEO
+          title="Blog - Online Clipboard Tips & Guides"
+          description="Learn tips and tricks for using online clipboard tools, sharing files securely, and syncing clipboard content between devices."
+          canonical="https://onlinclipboard.com/blog"
+        />
         <Navigation currentPage={page} onNavigate={handleNavigate} />
         <Blog onBack={handleBackToHome} />
         <Footer onNavigate={handleNavigate} />
@@ -117,6 +138,11 @@ function App() {
 
   return (
     <>
+      <SEO
+        title="OnlinClipboard - Free Online Clipboard for Text & Files"
+        description="Free online clipboard to share text, images, files & PDFs across devices. No login required. Self-destruct links for secure temporary sharing. Copy-paste online."
+        canonical="https://onlinclipboard.com/"
+      />
       <Navigation currentPage={page} onNavigate={handleNavigate} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8">
@@ -125,9 +151,9 @@ function App() {
               <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-600 rounded-xl flex items-center justify-center">
                 <Clipboard className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
               </div>
-              <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-white">在线剪切板</h1>
+              <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 dark:text-white">OnlinClipboard - Free Online Clipboard</h1>
             </div>
-            <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-lg">安全分享文字、图像、文件 - 阅后即焚</p>
+            <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-lg">Share text, images, and files across devices instantly - No login, self-destruct links, 100% free</p>
           </header>
 
           <div className="flex justify-center mb-6 sm:mb-8 px-3">
@@ -139,9 +165,10 @@ function App() {
                     ? 'bg-blue-600 text-white shadow-md'
                     : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                 }`}
+                aria-label="Create Share"
               >
-                <Clipboard className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span>创建分享</span>
+                <Clipboard className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
+                <span>Create Share</span>
               </button>
               <button
                 onClick={() => setMode('retrieve')}
@@ -150,9 +177,10 @@ function App() {
                     ? 'bg-blue-600 text-white shadow-md'
                     : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                 }`}
+                aria-label="Retrieve Share"
               >
-                <Lock className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span>获取分享</span>
+                <Lock className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
+                <span>Retrieve Share</span>
               </button>
             </div>
           </div>
@@ -171,25 +199,25 @@ function App() {
             <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 sm:p-6">
                 <div className="flex items-center gap-2 mb-3 sm:mb-4">
-                  <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
-                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">使用说明</h3>
+                  <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" aria-hidden="true" />
+                  <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">How to Use Online Clipboard</h2>
                 </div>
                 <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                   <div>
-                    <p className="font-medium text-gray-800 dark:text-gray-200 mb-1">创建分享</p>
+                    <h3 className="font-medium text-gray-800 dark:text-gray-200 mb-1">Create and Share Content</h3>
                     <ol className="list-decimal list-inside space-y-1 ml-2">
-                      <li>选择分享类型：文字、图像或文件</li>
-                      <li>输入内容或上传文件（最大45MB）</li>
-                      <li>选择口令长度（4位或6位数字）</li>
-                      <li>点击"创建分享"生成口令和链接</li>
+                      <li>Choose content type: text, image, or file</li>
+                      <li>Paste text online or upload files (max 300MB)</li>
+                      <li>Select secure passcode length (4 or 6 digits)</li>
+                      <li>Generate expiring share link instantly</li>
                     </ol>
                   </div>
                   <div>
-                    <p className="font-medium text-gray-800 dark:text-gray-200 mb-1">获取分享</p>
+                    <h3 className="font-medium text-gray-800 dark:text-gray-200 mb-1">Retrieve Shared Content</h3>
                     <ol className="list-decimal list-inside space-y-1 ml-2">
-                      <li>通过链接直接访问自动获取内容</li>
-                      <li>或手动输入数字口令后点击"获取"</li>
-                      <li>内容获取后立即销毁，无法再次访问</li>
+                      <li>Open link to auto-retrieve clipboard content</li>
+                      <li>Enter passcode if sharing via code</li>
+                      <li>Content self-destructs after first view</li>
                     </ol>
                   </div>
                 </div>
@@ -197,21 +225,21 @@ function App() {
 
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 sm:p-6">
                 <div className="flex items-center gap-2 mb-3 sm:mb-4">
-                  <Info className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
-                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">什么是在线剪切板？</h3>
+                  <Info className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" aria-hidden="true" />
+                  <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Free Online Clipboard for Cross-Device Sharing</h2>
                 </div>
                 <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                   <p>
-                    在线剪切板（Online Clipboard）是一个安全的临时内容分享工具，让您可以在不同设备或与他人之间快速传输文字、图片和文件。
+                    OnlinClipboard is a free temporary clipboard tool for instant copy-paste between devices. Share text online, paste images, transfer files and PDFs without login. Perfect for clipboard sync from PC to phone or sharing content with others securely.
                   </p>
                   <div>
-                    <p className="font-medium text-gray-800 dark:text-gray-200 mb-1">核心特性</p>
+                    <h3 className="font-medium text-gray-800 dark:text-gray-200 mb-1">Why Choose Our Online Clipboard?</h3>
                     <ul className="list-disc list-inside space-y-1 ml-2">
-                      <li>阅后即焚：内容获取一次后立即删除</li>
-                      <li>自动过期：24小时后自动销毁未读内容</li>
-                      <li>加密存储：所有数据加密保护隐私</li>
-                      <li>双重分享：支持口令和链接两种方式</li>
-                      <li>多种格式：支持文本、图像、文件传输</li>
+                      <li>Self-destruct links: Content auto-deleted after viewing</li>
+                      <li>Expiring clipboard: 24-hour automatic deletion</li>
+                      <li>No registration: Anonymous temporary file sharing</li>
+                      <li>Cross-device: Copy from PC and paste on phone</li>
+                      <li>Multi-format: Text, images, files, and PDF support</li>
                     </ul>
                   </div>
                 </div>

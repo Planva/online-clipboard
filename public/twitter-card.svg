@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e40af;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2563eb;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+
+  <!-- Decorative elements -->
+  <circle cx="100" cy="100" r="150" fill="white" opacity="0.05"/>
+  <circle cx="1100" cy="500" r="200" fill="white" opacity="0.05"/>
+
+  <!-- Main content card -->
+  <rect x="100" y="140" width="1000" height="350" rx="20" fill="white" opacity="0.95" filter="url(#shadow)"/>
+
+  <!-- Icon -->
+  <rect x="150" y="190" width="120" height="140" rx="12" fill="#2563eb" opacity="0.9"/>
+  <rect x="170" y="220" width="80" height="8" rx="4" fill="white" opacity="0.8"/>
+  <rect x="170" y="240" width="60" height="8" rx="4" fill="white" opacity="0.6"/>
+  <rect x="170" y="260" width="70" height="8" rx="4" fill="white" opacity="0.7"/>
+  <circle cx="245" cy="200" r="16" fill="#ef4444"/>
+  <path d="M238 200 L252 200 M245 193 L245 207" stroke="white" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Title -->
+  <text x="310" y="250" font-family="Arial, sans-serif" font-size="64" font-weight="bold" fill="#1e293b">
+    Online Clipboard
+  </text>
+
+  <!-- Subtitle -->
+  <text x="310" y="310" font-family="Arial, sans-serif" font-size="36" fill="#64748b">
+    Free Text, Image &amp; File Share
+  </text>
+
+  <!-- Features -->
+  <text x="310" y="370" font-family="Arial, sans-serif" font-size="28" fill="#475569">
+    ✓ No Login Required  ✓ Self-Destruct Links  ✓ Cross-Device
+  </text>
+
+  <!-- Domain -->
+  <text x="310" y="440" font-family="Arial, sans-serif" font-size="32" font-weight="600" fill="#2563eb">
+    onlinclipboard.com
+  </text>
+</svg>
