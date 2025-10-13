@@ -138,8 +138,8 @@ function App() {
   return (
     <>
       <SEO
-        title="OnlinClipboard - Free Online Clipboard for Text & Files"
-        description="Free online clipboard to share text, images, files & PDFs across devices. No login required. Self-destruct links for secure temporary sharing. Copy-paste online."
+        title="onlinclipboard.com-Free Online Clipboard for Text&Files"
+        description="Free online clipboard to share text, images, files & PDFs across devices. No login required. Self-destruct links for secure temporary sharing.Copy-paste online."
         canonical="https://onlinclipboard.com/"
       />
       <Navigation currentPage={page} onNavigate={handleNavigate} />
