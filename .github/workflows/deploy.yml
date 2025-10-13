@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy to Cloudflare
 
 on:
   push:
@@ -13,6 +13,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -20,7 +21,7 @@ jobs:
       - name: Install deps
         run: npm ci
 
-      - name: Build (frontend)
+      - name: Build frontend
         run: npm run build
 
       - name: Apply D1 migrations (remote)
@@ -30,5 +31,11 @@ jobs:
             npx wrangler d1 execute web_server --remote --file=./migrations/web_server/0002_seed.sql
           fi
 
-      - name: Deploy
+      - name: Ensure R2 bucket exists (first-time only)
+        run: npx wrangler r2 bucket create onlineclipboard-files || echo "bucket exists"
+
+      - name: Whoami
+        run: npx wrangler whoami
+
+      - name: Deploy Worker
         run: npx wrangler deploy --minify
