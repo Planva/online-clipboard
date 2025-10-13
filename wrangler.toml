@@ -1,20 +1,23 @@
 name = "onlineclipboard"
-account_id = "56db5c1a91ec01f4b3c7c612d8ebeeef"
+account_id = "56db5c1a91ec01f4b3c7c612d8ebeeef"       
 main = "src/worker/index.js"
 compatibility_date = "2024-01-15"
 
+# D1 数据库绑定
 [[d1_databases]]
 binding = "DB"
 database_name = "web_server"
 database_id = "7a6c36d2-169d-43de-8288-55376054f92f"
 
+# R2 绑定（与你代码中的 env.R2_BUCKET 一致）
 [[r2_buckets]]
 binding = "R2_BUCKET"
 bucket_name = "onlineclipboard-files"
 
+# KV 命名空间（务必填写真实 id）
 [[kv_namespaces]]
 binding = "CACHE"
-id = "3050911dfcbe404c8b87871ebba2ed9f"   # ← 不能是“...”，必须是真实 ID
+id = "3050911dfcbe404c8b87871ebba2ed9f" 
 
 [vars]
 MAX_FILE_SIZE = 314572800
@@ -23,6 +26,7 @@ DOMAIN_PREFIX = "onlinclipboard_com"
 [triggers]
 crons = ["0 * * * *"]
 
+# 静态资源绑定（与你代码里的 env.ASSETS.fetch 对齐）
 [assets]
 directory = "./dist"
 binding = "ASSETS"
