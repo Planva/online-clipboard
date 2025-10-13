@@ -1,0 +1,29 @@
+name = "onlineclipboard"
+main = "src/worker/index.js"
+compatibility_date = "2024-01-15"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "web_server"
+database_id = "7a6c36d2-169d-43de-8288-55376054f92f"
+
+[[r2_buckets]]
+binding = "R2_BUCKET"
+bucket_name = "onlineclipboard-files"
+
+[[kv_namespaces]]
+binding = "CACHE"
+id = "3050911dfcbe404c8b87871ebba2ed9f"
+
+[vars]
+MAX_FILE_SIZE = 314572800
+DOMAIN_PREFIX = "onlinclipboard_com"
+
+[triggers]
+crons = ["0 * * * *"]
+
+[site]
+bucket = "./dist"
+
+[observability]
+enabled = true
