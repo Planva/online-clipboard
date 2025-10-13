@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "deploy": "npm run build && wrangler deploy",
     "wrangler": "wrangler",
-    "db:init": "wrangler d1 execute web_server --file=./src/db/schema.sql"
+    "db:init": "wrangler d1 execute web_server --file=./src/db/schema.sql",
+    "db:init:remote": "wrangler d1 execute web_server --remote --file=./src/db/schema.sql"
   },
   "dependencies": {
     "lucide-react": "^0.344.0",

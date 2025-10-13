@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Star, ChevronRight } from 'lucide-react';
 import { api, Review, ReviewStats } from '../lib/api';
 
@@ -12,12 +12,7 @@ export function ReviewList({ limit = 10, onViewAll }: ReviewListProps) {
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<ReviewStats>({ average: 0, total: 0, distribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } });
 
-  useEffect(() => {
-    fetchReviews();
-    fetchStats();
-  }, [limit]);
-
-  const fetchReviews = async () => {
+  const fetchReviews = useCallback(async () => {
     try {
       const data = await api.reviews.list({ limit });
       setReviews(data || []);
@@ -26,18 +21,24 @@ export function ReviewList({ limit = 10, onViewAll }: ReviewListProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [limit]);
 
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     try {
       const data = await api.reviews.getStats();
       setStats(data);
     } catch (err) {
       console.error('Error fetching stats:', err);
     }
-  };
+  }, []);
 
-  const formatDate = (dateString: string) => {
+  useEffect(() => {
+    fetchReviews();
+    fetchStats();
+  }, [fetchReviews, fetchStats]);
+
+  const formatDate = (dateString: string | undefined) => {
+    if (!dateString) return '';
     const date = new Date(dateString);
     const now = new Date();
     const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));

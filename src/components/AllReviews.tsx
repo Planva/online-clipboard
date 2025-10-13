@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Star, ArrowLeft, Filter } from 'lucide-react';
 import { api, Review, ReviewStats } from '../lib/api';
 
@@ -12,12 +12,7 @@ export function AllReviews({ onBack }: AllReviewsProps) {
   const [filterRating, setFilterRating] = useState<number | null>(null);
   const [stats, setStats] = useState<ReviewStats>({ average: 0, total: 0, distribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } });
 
-  useEffect(() => {
-    fetchReviews();
-    fetchStats();
-  }, [filterRating]);
-
-  const fetchReviews = async () => {
+  const fetchReviews = useCallback(async () => {
     setLoading(true);
     try {
       const data = await api.reviews.list({
@@ -30,18 +25,24 @@ export function AllReviews({ onBack }: AllReviewsProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filterRating]);
 
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     try {
       const data = await api.reviews.getStats();
       setStats(data);
     } catch (err) {
       console.error('Error fetching stats:', err);
     }
-  };
+  }, []);
 
-  const formatDate = (dateString: string) => {
+  useEffect(() => {
+    fetchReviews();
+    fetchStats();
+  }, [fetchReviews, fetchStats]);
+
+  const formatDate = (dateString: string | undefined) => {
+    if (!dateString) return '';
     const date = new Date(dateString);
     return date.toLocaleString('zh-CN', {
       year: 'numeric',
@@ -59,7 +60,7 @@ export function AllReviews({ onBack }: AllReviewsProps) {
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 sm:p-6 mb-4 sm:mb-6">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-6 transition-colors"
+          className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:text-white mb-6 transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
           <span>返回</span>
@@ -79,7 +80,11 @@ export function AllReviews({ onBack }: AllReviewsProps) {
                       {[1, 2, 3, 4, 5].map((star) => (
                         <Star
                           key={star}
-                          className={"w-5 h-5 " + (star <= Math.round(stats.average) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300')}
+                          className={`w-5 h-5 ${
+                            star <= Math.round(stats.average)
+                              ? 'fill-yellow-400 text-yellow-400'
+                              : 'text-gray-300'
+                          }`}
                         />
                       ))}
                     </div>
@@ -103,7 +108,9 @@ export function AllReviews({ onBack }: AllReviewsProps) {
                   <button
                     key={rating}
                     onClick={() => setFilterRating(filterRating === rating ? null : rating)}
-                    className={"w-full flex items-center gap-3 p-2 rounded-lg transition-colors " + (filterRating === rating ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800' : 'hover:bg-gray-50 dark:hover:bg-gray-700')}
+                    className={`w-full flex items-center gap-3 p-2 rounded-lg transition-colors ${
+                      filterRating === rating ? 'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800' : 'hover:bg-gray-50 dark:hover:bg-gray-700'
+                    }`}
                   >
                     <div className="flex items-center gap-1 w-20">
                       <span className="text-sm font-medium text-gray-900 dark:text-white">{rating}</span>
@@ -112,7 +119,7 @@ export function AllReviews({ onBack }: AllReviewsProps) {
                     <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
                       <div
                         className="h-full bg-yellow-400 transition-all"
-                        style={{ width: percentage + '%' }}
+                        style={{ width: `${percentage}%` }}
                       />
                     </div>
                     <span className="text-sm text-gray-600 dark:text-gray-400 w-12 text-right">{count}</span>
@@ -139,7 +146,7 @@ export function AllReviews({ onBack }: AllReviewsProps) {
       ) : reviews.length === 0 ? (
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 sm:p-8 text-center">
           <p className="text-gray-500 dark:text-gray-400">
-            {filterRating ? "暂无 " + filterRating + " 星评价" : '暂无评价'}
+            {filterRating ? `暂无 ${filterRating} 星评价` : '暂无评价'}
           </p>
         </div>
       ) : (
@@ -154,7 +161,11 @@ export function AllReviews({ onBack }: AllReviewsProps) {
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star
                       key={star}
-                      className={"w-5 h-5 " + (star <= review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300 dark:text-gray-600')}
+                      className={`w-5 h-5 ${
+                        star <= review.rating
+                          ? 'fill-yellow-400 text-yellow-400'
+                          : 'text-gray-300 dark:text-gray-600'
+                      }`}
                     />
                   ))}
                 </div>

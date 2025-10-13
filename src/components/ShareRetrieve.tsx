@@ -24,9 +24,9 @@ export function ShareRetrieve() {
       const data = await api.shares.getBySlug(slug);
       setShare(data);
       window.history.replaceState({}, '', window.location.pathname);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error retrieving share:', err);
-      setError(err.message || '获取失败，请重试');
+      setError(err instanceof Error ? err.message : '获取失败，请重试');
     } finally {
       setLoading(false);
     }
@@ -50,9 +50,9 @@ export function ShareRetrieve() {
     try {
       const data = await api.shares.getByPasscode(cleanPasscode);
       setShare(data);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error retrieving share:', err);
-      setError(err.message || '获取失败，请重试');
+      setError(err instanceof Error ? err.message : '获取失败，请重试');
     } finally {
       setLoading(false);
     }

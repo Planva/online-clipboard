@@ -37,9 +37,9 @@ export function ReviewForm({ onSuccess }: ReviewFormProps) {
       if (onSuccess) {
         onSuccess();
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error submitting review:', err);
-      setError(err.message || '提交失败，请稍后重试');
+      setError(err instanceof Error ? err.message : '提交失败，请稍后重试');
     } finally {
       setLoading(false);
     }
