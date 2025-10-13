@@ -16,9 +16,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    # 这里从 Secrets 读取 Cloudflare API Token。
+    # 请在 GitHub 项目：Settings → Secrets and variables → Actions
+    # 新建一个名为 CLOUDFLARE_API_TOKEN 的 secret，值为你的 Cloudflare API Token
+    # （至少需要：Account → R2:Edit 与 Workers KV/Workers Scripts 对应权限，通常可用 “Edit Cloudflare Workers” 模板+R2:Edit）
     env:
-      # Cloudflare API Token（在 GitHub 项目 Settings -> Secrets -> Actions 中配置）
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
     steps:
       - name: Checkout
@@ -36,18 +39,18 @@ jobs:
       - name: Build
         run: npm run build
 
-      # 统一 wrangler 版本，避免本地与 CI 不一致导致的行为差异
+      # 固定 wrangler 版本，避免输出差异
       - name: Install wrangler
         run: npm i -g wrangler@4.42.2
 
-      # 幂等创建 R2 桶：先用 JSON 列表精准判断是否存在，不存在才创建
+      # 幂等创建 R2 桶：使用 --json 列表并精确判断是否存在
       - name: Ensure R2 bucket exists (idempotent)
         shell: bash
         run: |
           set -euo pipefail
-          # 列出所有 R2 桶（JSON）
-          wrangler r2 bucket list --format=json > buckets.json
-          # 用 Node 精准判断是否包含 onlineclipboard-files
+          # 列出桶（JSON）
+          wrangler r2 bucket list --json > buckets.json
+          # 精确判断 onlineclipboard-files 是否已存在
           if node -e 'const fs=require("fs");const arr=JSON.parse(fs.readFileSync("buckets.json","utf8"));process.exit(arr.some(b=>b.name==="onlineclipboard-files")?0:1)'; then
             echo "R2 bucket 'onlineclipboard-files' already exists."
           else
@@ -61,6 +64,7 @@ jobs:
       - name: Deploy Worker
         run: wrangler deploy --minify
 
+      # 仅当提供了 CLOUDFLARE_API_TOKEN 时才尝试 tail，避免无 Token 报错卡住
       - name: Tail logs (20s, optional)
-        if: ${{ always() }}
+        if: ${{ env.CLOUDFLARE_API_TOKEN != '' }}
         run: timeout 20s wrangler tail --format=pretty || true
