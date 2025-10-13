@@ -6,6 +6,7 @@ export async function handleFilesAPI(request, env) {
   const url = new URL(request.url);
   const pathParts = url.pathname.split('/');
   const key = pathParts[pathParts.length - 1];
+  const shouldDelete = url.searchParams.get('delete') === 'true';
 
   if (!key) {
     return new Response('File not found', { status: 404 });
@@ -18,19 +19,23 @@ export async function handleFilesAPI(request, env) {
       return new Response('File not found', { status: 404 });
     }
 
-    const fileUrl = buildFileUrl(key);
-    const share = await getShareByFileUrl(env, fileUrl);
+    if (shouldDelete) {
+      const fileUrl = buildFileUrl(key);
+      const share = await getShareByFileUrl(env, fileUrl);
 
-    if (share) {
-      await deleteShare(env, share.id, share.file_url);
+      if (share) {
+        await deleteShare(env, share.id, share.file_url);
+      }
     }
+
+    const contentDisposition = shouldDelete ? 'attachment' : 'inline';
 
     return new Response(file.body, {
       headers: {
         ...corsHeaders,
         'Content-Type': file.contentType,
         'Cache-Control': 'no-cache',
-        'Content-Disposition': 'attachment',
+        'Content-Disposition': contentDisposition,
       },
     });
   } catch (error) {

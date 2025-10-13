@@ -67,7 +67,13 @@ export function ShareRetrieve() {
 
   const handleDownload = () => {
     if (share?.file_url) {
-      window.open(share.file_url, '_blank');
+      const downloadUrl = `${share.file_url}?delete=true`;
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = share.file_name || 'download';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   };
 
