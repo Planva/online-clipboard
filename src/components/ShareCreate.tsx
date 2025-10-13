@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Copy, FileUp, Image, Type, Clipboard, Link as LinkIcon } from 'lucide-react';
 import { api } from '../lib/api';
 import { formatPasscode } from '../utils/passcode';
@@ -23,6 +23,12 @@ export function ShareCreate({ initialType, onTypeChange }: ShareCreateProps) {
   const [passcodeLength, setPasscodeLength] = useState<4 | 6>(6);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (initialType) {
+      setContentType(initialType);
+    }
+  }, [initialType]);
 
   const handlePasteFromClipboard = async () => {
     try {

@@ -27,7 +27,9 @@ function App() {
     const path = window.location.pathname;
     const params = new URLSearchParams(window.location.search);
 
-    if (path.includes('/online-clipboard-text')) {
+    if (params.get('s')) {
+      setMode('retrieve');
+    } else if (path.includes('/online-clipboard-text')) {
       setMode('create');
       setSelectedType('text');
     } else if (path.includes('/online-clipboard-images')) {
@@ -36,8 +38,6 @@ function App() {
     } else if (path.includes('/online-clipboard-files')) {
       setMode('create');
       setSelectedType('file');
-    } else if (params.get('s')) {
-      setMode('retrieve');
     }
   }, []);
 
