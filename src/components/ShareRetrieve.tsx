@@ -180,10 +180,21 @@ export function ShareRetrieve() {
           value={passcode}
           onChange={(e) => setPasscode(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleRetrieve()}
-          placeholder="Enter a 4- or 6-digit numeric passcode"
-          className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-xl sm:text-2xl font-mono tracking-wider bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-          maxLength={7}
+          placeholder="Enter 4- or 6-digit code"
+          inputMode="numeric"
+          pattern="\d*"
+          maxLength={6}
+          aria-label="Passcode"
+          className={`w-full px-4 py-3 rounded-xl border focus:outline-none
+                      focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                      text-center text-xl sm:text-2xl font-mono
+                      bg-white text-gray-900 border-gray-300
+                      dark:bg-gray-700 dark:text-white dark:border-gray-600
+                      placeholder:text-gray-400 dark:placeholder:text-gray-300
+                      placeholder:text-base sm:placeholder:text-lg
+                      tracking-wider placeholder:tracking-normal`}
         />
+
         {error && (
           <p className="mt-2 text-sm text-red-600">{error}</p>
         )}

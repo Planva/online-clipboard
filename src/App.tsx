@@ -9,7 +9,6 @@ import { ReviewForm } from './components/ReviewForm';
 import { AllReviews } from './components/AllReviews';
 import { TermsOfService } from './pages/TermsOfService';
 import { PrivacyPolicy } from './pages/PrivacyPolicy';
-import { FAQ } from './pages/FAQ';
 import { Blog } from './pages/Blog';
 import { FAQSection } from './components/FAQSection';
 import { SEO } from './components/SEO';
@@ -115,7 +114,7 @@ function App() {
           canonical="https://onlinclipboard.com/faq"
         />
         <Navigation currentPage={page} onNavigate={handleNavigate} />
-        <FAQ onBack={handleBackToHome} />
+        <FAQSection fullPage={true} onBack={handleBackToHome} />
         <Footer onNavigate={handleNavigate} />
       </>
     );

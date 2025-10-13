@@ -17,7 +17,7 @@ export function Footer({ onNavigate }: FooterProps) {
   const visibleLinks = showAllLinks ? links : links.slice(0, 3);
 
   return (
-    <footer className="bg-gray-900 text-gray-300 mt-8 sm:mt-16">
+    <footer className="bg-gray-900 text-gray-300 pt-12 pb-8 sm:pt-12 sm:pb-12">
       <div className="container mx-auto px-3 sm:px-4 py-8 sm:py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
           <div>

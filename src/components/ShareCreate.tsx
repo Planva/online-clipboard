@@ -247,7 +247,7 @@ export function ShareCreate({ initialType, onTypeChange }: ShareCreateProps) {
             }}
             className={`p-3 sm:p-4 rounded-xl border-2 transition-all ${
               contentType === 'text'
-                ? 'border-blue-600 bg-blue-50'
+                ? 'border-blue-600 bg-blue-50 dark:bg-black dark:border-white/20'
                 : 'border-gray-200 hover:border-gray-300 dark:border-gray-600'
             }`}
           >
@@ -261,7 +261,7 @@ export function ShareCreate({ initialType, onTypeChange }: ShareCreateProps) {
             }}
             className={`p-3 sm:p-4 rounded-xl border-2 transition-all ${
               contentType === 'image'
-                ? 'border-blue-600 bg-blue-50'
+                ? 'border-blue-600 bg-blue-50 dark:bg-black dark:border-white/20'
                 : 'border-gray-200 hover:border-gray-300 dark:border-gray-600'
             }`}
           >
@@ -275,7 +275,7 @@ export function ShareCreate({ initialType, onTypeChange }: ShareCreateProps) {
             }}
             className={`p-3 sm:p-4 rounded-xl border-2 transition-all ${
               contentType === 'file'
-                ? 'border-blue-600 bg-blue-50'
+                ? 'border-blue-600 bg-blue-50 dark:bg-black dark:border-white/20'
                 : 'border-gray-200 hover:border-gray-300 dark:border-gray-600'
             }`}
           >
@@ -292,7 +292,7 @@ export function ShareCreate({ initialType, onTypeChange }: ShareCreateProps) {
             onClick={() => setPasscodeLength(4)}
             className={`p-2 sm:p-3 rounded-xl border-2 transition-all ${
               passcodeLength === 4
-                ? 'border-blue-600 bg-blue-50'
+                ? 'border-blue-600 bg-blue-50 dark:bg-black dark:border-white/20'
                 : 'border-gray-200 hover:border-gray-300 dark:border-gray-600'
             }`}
           >
@@ -302,7 +302,7 @@ export function ShareCreate({ initialType, onTypeChange }: ShareCreateProps) {
             onClick={() => setPasscodeLength(6)}
             className={`p-2 sm:p-3 rounded-xl border-2 transition-all ${
               passcodeLength === 6
-                ? 'border-blue-600 bg-blue-50'
+                ? 'border-blue-600 bg-blue-50 dark:bg-black dark:border-white/20'
                 : 'border-gray-200 hover:border-gray-300 dark:border-gray-600'
             }`}
           >
