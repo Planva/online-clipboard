@@ -15,57 +15,52 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     env:
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      # Cloudflare API Token（在 GitHub 项目 Settings -> Secrets -> Actions 中配置）
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Use Node.js 20
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install deps
         run: npm ci
 
-      # 固定 Wrangler v4，避免 v3 行为差异
-      - name: Install Wrangler v4
-        run: npm i -D wrangler@4.42.2
-
-      - name: Build frontend
+      - name: Build
         run: npm run build
 
-      # —— D1 迁移：先列出、再应用（幂等） —— #
-      - name: List D1 migrations (remote)
-        run: npx wrangler d1 migrations list web_server --remote
+      # 统一 wrangler 版本，避免本地与 CI 不一致导致的行为差异
+      - name: Install wrangler
+        run: npm i -g wrangler@4.42.2
 
-      - name: Apply D1 migrations (remote)
-        run: npx wrangler d1 migrations apply web_server --remote
-
-      # 可选种子：如果文件存在就执行（幂等）
-      - name: Seed D1 (remote) [optional]
-        if: ${{ hashFiles('migrations/web_server/0002_seed.sql') != '' }}
-        run: npx wrangler d1 execute web_server --remote --file=./migrations/web_server/0002_seed.sql
-
-      # —— R2 桶幂等：已存在则跳过 —— #
-      - name: Ensure R2 bucket exists
+      # 幂等创建 R2 桶：先用 JSON 列表精准判断是否存在，不存在才创建
+      - name: Ensure R2 bucket exists (idempotent)
+        shell: bash
         run: |
-          if npx wrangler r2 bucket list | grep -q '^onlineclipboard-files$'; then
-            echo "R2 bucket already exists"
+          set -euo pipefail
+          # 列出所有 R2 桶（JSON）
+          wrangler r2 bucket list --format=json > buckets.json
+          # 用 Node 精准判断是否包含 onlineclipboard-files
+          if node -e 'const fs=require("fs");const arr=JSON.parse(fs.readFileSync("buckets.json","utf8"));process.exit(arr.some(b=>b.name==="onlineclipboard-files")?0:1)'; then
+            echo "R2 bucket 'onlineclipboard-files' already exists."
           else
-            npx wrangler r2 bucket create onlineclipboard-files
+            echo "Creating R2 bucket 'onlineclipboard-files'..."
+            wrangler r2 bucket create onlineclipboard-files
           fi
 
       - name: Whoami (sanity check)
-        run: npx wrangler whoami
+        run: wrangler whoami
 
       - name: Deploy Worker
-        run: npx wrangler deploy --minify
+        run: wrangler deploy --minify
 
-      # （可选）部署后抓取一段边缘日志，便于排查
       - name: Tail logs (20s, optional)
         if: ${{ always() }}
-        run: timeout 20s npx wrangler tail --format=pretty || true
+        run: timeout 20s wrangler tail --format=pretty || true
