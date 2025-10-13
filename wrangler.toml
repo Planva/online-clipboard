@@ -22,8 +22,9 @@ DOMAIN_PREFIX = "onlinclipboard_com"
 [triggers]
 crons = ["0 * * * *"]
 
-[site]
-bucket = "./dist"
+[assets]
+directory = "./dist"
+binding = "ASSETS" 
 
 [observability]
 enabled = true
