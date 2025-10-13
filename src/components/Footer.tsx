@@ -9,12 +9,9 @@ export function Footer({ onNavigate }: FooterProps) {
   const [showAllLinks, setShowAllLinks] = useState(false);
 
   const links = [
-    { name: 'Example Site 1', url: 'https://example1.com' },
-    { name: 'Example Site 2', url: 'https://example2.com' },
-    { name: 'Example Site 3', url: 'https://example3.com' },
-    { name: 'Example Site 4', url: 'https://example4.com' },
-    { name: 'Example Site 5', url: 'https://example5.com' },
-    { name: 'Example Site 6', url: 'https://example6.com' },
+    { name: 'AI manga translation', url: 'https://aimangatranslate.com' },
+    { name: 'Tat Test', url: 'https://www.tat-test.com' },
+    { name: 'YouTube Thumbnail Tester', url: 'https://www.thumbnail-tester.com' },
   ];
 
   const visibleLinks = showAllLinks ? links : links.slice(0, 3);
@@ -86,7 +83,7 @@ export function Footer({ onNavigate }: FooterProps) {
             <ul className="space-y-2 text-sm sm:text-base">
               <li>
                 <a
-                  href="https://x.com"
+                  href="https://x.com/planvaofficial"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors flex items-center gap-2 text-sm sm:text-base"
@@ -103,17 +100,17 @@ export function Footer({ onNavigate }: FooterProps) {
           <div>
             <h3 className="text-white font-semibold mb-3 text-sm sm:text-base">Contact</h3>
             <a
-              href="mailto:contact@example.com"
+              href="mailto:support@onlinclipboard.com"
               className="flex items-center gap-2 hover:text-white transition-colors text-sm sm:text-base"
             >
               <Mail className="w-5 h-5" />
-              <span>contact@example.com</span>
+              <span>support@onlinclipboard.com</span>
             </a>
           </div>
         </div>
 
         <div className="border-t border-gray-800 pt-6 sm:pt-8 text-center text-xs sm:text-sm">
-          <p>&copy; {new Date().getFullYear()} 在线剪切板. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} onlinclipboard.com All rights reserved.</p>
           <p className="mt-2 text-gray-400">
             所有分享内容加密存储，24小时后自动删除 | 接收一次后立即销毁，确保隐私安全
           </p>

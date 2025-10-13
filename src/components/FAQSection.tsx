@@ -102,10 +102,10 @@ export function FAQSection() {
           如果您的问题没有在上面找到答案，欢迎通过邮件联系我们。
         </p>
         <a
-          href="mailto:contact@example.com"
+          href="mailto:support@onlinclipboard.com"
           className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
         >
-          contact@example.com
+          support@onlinclipboard.com
         </a>
       </div>
     </div>
