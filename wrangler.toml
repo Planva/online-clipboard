@@ -1,4 +1,5 @@
 name = "onlineclipboard"
+account_id = "56db5c1a91ec01f4b3c7c612d8ebeeef"         # 建议写上，减少环境依赖
 main = "src/worker/index.js"
 compatibility_date = "2024-01-15"
 
@@ -8,7 +9,7 @@ database_name = "web_server"
 database_id = "7a6c36d2-169d-43de-8288-55376054f92f"
 
 [[r2_buckets]]
-binding = "R2_BUCKET"
+binding = "FILES"                      # ← 关键：与代码一致
 bucket_name = "onlineclipboard-files"
 
 [[kv_namespaces]]
@@ -17,14 +18,14 @@ id = "3050911dfcbe404c8b87871ebba2ed9f"
 
 [vars]
 MAX_FILE_SIZE = 314572800
-DOMAIN_PREFIX = "onlinclipboard_com"
+DOMAIN_PREFIX = "onlinclipboard_com"   # 你项目里用的就是这个拼写，保留即可
 
 [triggers]
 crons = ["0 * * * *"]
 
 [assets]
 directory = "./dist"
-binding = "ASSETS" 
+binding = "ASSETS"                     # 与代码里的 env.ASSETS.fetch 一致
 
 [observability]
 enabled = true
