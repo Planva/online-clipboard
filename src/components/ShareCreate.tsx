@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Copy, FileUp, Image, Type, Clipboard, Link as LinkIcon } from 'lucide-react';
+import { Copy, FileUp, Image, Type, Clipboard, Link as LinkIcon, QrCode } from 'lucide-react';
 import { api } from '../lib/api';
 import { formatPasscode } from '../utils/passcode';
+import { QRCodeDisplay } from './QRCodeDisplay';
 
 interface ShareResult {
   passcode: string;
@@ -23,6 +24,7 @@ export function ShareCreate({ initialType, onTypeChange }: ShareCreateProps) {
   const [passcodeLength, setPasscodeLength] = useState<4 | 6>(6);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [shareMode, setShareMode] = useState<'passcode' | 'link' | 'qrcode'>('passcode');
 
   useEffect(() => {
     if (initialType) {
@@ -173,60 +175,125 @@ export function ShareCreate({ initialType, onTypeChange }: ShareCreateProps) {
   };
 
   if (result) {
+    const shareUrl = `${window.location.origin}?s=${result.slug}`;
+
     return (
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4 sm:p-8 max-w-md w-full">
         <div className="text-center">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Copy className="w-8 h-8 text-green-600" />
+          <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Clipboard className="w-8 h-8 text-green-600 dark:text-green-400" aria-hidden="true" />
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">Share Created</h2>
           <p className="text-gray-600 dark:text-gray-400 mb-6">
             Content is encrypted and will be deleted after a single retrieval.
           </p>
 
-          <div className="space-y-4 mb-6">
-            <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Passcode</p>
-              <div className="flex items-center justify-center gap-2 mb-4">
-                <span className="text-4xl font-mono font-bold text-gray-900 dark:text-white">
-                  {formatPasscode(result.passcode)}
-                </span>
-                <button
-                  onClick={copyPasscode}
-                  className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
-                  title="Copy passcode"
-                >
-                  <Copy className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                </button>
-              </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                Valid until {new Date(result.expiresAt).toLocaleString('en-US')}
-              </p>
-            </div>
-
-            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
-              <div className="flex items-center justify-between mb-2">
-                <p className="text-sm text-blue-900 dark:text-blue-300 font-medium">Share link</p>
-                <LinkIcon className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-              </div>
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-3 mb-3 break-all text-sm text-gray-700 dark:text-gray-300 font-mono">
-                {window.location.origin}?s={result.slug}
-              </div>
+          {/* Tab Navigation */}
+          <div className="flex justify-center mb-6">
+            <div className="inline-flex bg-gray-100 dark:bg-gray-700 rounded-xl p-1">
               <button
-                onClick={copyShareLink}
-                className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center justify-center gap-2"
+                onClick={() => setShareMode('passcode')}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${
+                  shareMode === 'passcode'
+                    ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                }`}
+                aria-label="View passcode"
               >
-                <Copy className="w-4 h-4" />
-                <span>Copy link</span>
+                <Type className="w-4 h-4" aria-hidden="true" />
+                <span>Passcode</span>
+              </button>
+              <button
+                onClick={() => setShareMode('link')}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${
+                  shareMode === 'link'
+                    ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                }`}
+                aria-label="View link"
+              >
+                <LinkIcon className="w-4 h-4" aria-hidden="true" />
+                <span>Link</span>
+              </button>
+              <button
+                onClick={() => setShareMode('qrcode')}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${
+                  shareMode === 'qrcode'
+                    ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                }`}
+                aria-label="View QR code"
+              >
+                <QrCode className="w-4 h-4" aria-hidden="true" />
+                <span>QR Code</span>
               </button>
             </div>
           </div>
 
+          <div className="mb-6">
+            {shareMode === 'passcode' && (
+              <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Passcode</p>
+                <div className="flex items-center justify-center gap-2 mb-4">
+                  <span className="text-4xl font-mono font-bold text-gray-900 dark:text-white">
+                    {formatPasscode(result.passcode)}
+                  </span>
+                  <button
+                    onClick={copyPasscode}
+                    className="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
+                    title="Copy passcode"
+                    aria-label="Copy passcode to clipboard"
+                  >
+                    <Copy className="w-5 h-5 text-gray-600 dark:text-gray-400" aria-hidden="true" />
+                  </button>
+                </div>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  Valid until {new Date(result.expiresAt).toLocaleString('en-US')}
+                </p>
+              </div>
+            )}
+
+            {shareMode === 'link' && (
+              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-sm text-blue-900 dark:text-blue-300 font-medium">Share Link</p>
+                  <LinkIcon className="w-4 h-4 text-blue-600 dark:text-blue-400" aria-hidden="true" />
+                </div>
+                <div className="bg-white dark:bg-gray-800 rounded-lg p-3 mb-3 break-all text-sm text-gray-700 dark:text-gray-300 font-mono">
+                  {shareUrl}
+                </div>
+                <button
+                  onClick={copyShareLink}
+                  className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium flex items-center justify-center gap-2"
+                  aria-label="Copy share link to clipboard"
+                >
+                  <Copy className="w-4 h-4" aria-hidden="true" />
+                  <span>Copy Link</span>
+                </button>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                  Valid until {new Date(result.expiresAt).toLocaleString('en-US')}
+                </p>
+              </div>
+            )}
+
+            {shareMode === 'qrcode' && (
+              <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
+                <QRCodeDisplay url={shareUrl} label="Scan to access shared content" />
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">
+                  Valid until {new Date(result.expiresAt).toLocaleString('en-US')}
+                </p>
+              </div>
+            )}
+          </div>
+
           <button
-            onClick={() => setResult(null)}
+            onClick={() => {
+              setResult(null);
+              setShareMode('passcode');
+            }}
             className="w-full py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors font-medium"
           >
-            Create another share
+            Create Another Share
           </button>
         </div>
       </div>
