@@ -12,15 +12,28 @@ export function QRCodeDisplay({ url, label = "Scan QR Code" }: QRCodeDisplayProp
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    try {
-      // Generate QR code using client-side generator
-      const dataURL = generateQRCodeDataURL(url, 300);
-      setQrDataURL(dataURL);
-      setError(false);
-    } catch (err) {
-      console.error('Failed to generate QR code:', err);
-      setError(true);
-    }
+    let mounted = true;
+
+    const generateQR = async () => {
+      try {
+        const dataURL = await generateQRCodeDataURL(url, 300);
+        if (mounted) {
+          setQrDataURL(dataURL);
+          setError(false);
+        }
+      } catch (err) {
+        console.error('Failed to generate QR code:', err);
+        if (mounted) {
+          setError(true);
+        }
+      }
+    };
+
+    generateQR();
+
+    return () => {
+      mounted = false;
+    };
   }, [url]);
 
   const handleDownload = () => {
