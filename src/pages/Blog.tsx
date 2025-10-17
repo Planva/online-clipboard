@@ -310,10 +310,10 @@ export function Blog({ onBack }: BlogProps) {
   const [selectedArticle, setSelectedArticle] = useState<BlogArticle | null>(null);
 
   useEffect(() => {
-    // Check URL hash for direct article access
-    const hash = window.location.hash;
-    if (hash.startsWith('#/blog/')) {
-      const slug = hash.replace('#/blog/', '');
+    // Check URL path for direct article access
+    const path = window.location.pathname;
+    if (path.startsWith('/blog/')) {
+      const slug = path.replace('/blog/', '');
       const article = articles.find(a => a.slug === slug);
       if (article) {
         setSelectedArticle(article);
@@ -323,13 +323,13 @@ export function Blog({ onBack }: BlogProps) {
 
   const handleArticleClick = (article: BlogArticle) => {
     setSelectedArticle(article);
-    window.location.hash = `/blog/${article.slug}`;
+    window.history.pushState({}, '', `/blog/${article.slug}`);
     window.scrollTo(0, 0);
   };
 
   const handleBackToBlog = () => {
     setSelectedArticle(null);
-    window.location.hash = '';
+    window.history.pushState({}, '', '/blog');
   };
 
   if (selectedArticle) {

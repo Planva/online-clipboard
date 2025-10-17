@@ -27,18 +27,54 @@ function App() {
     const path = window.location.pathname;
     const params = new URLSearchParams(window.location.search);
 
+    // Check for share retrieval parameter
     if (params.get('s')) {
       setMode('retrieve');
+      setPage('home');
+      return;
+    }
+
+    // Detect page based on path
+    if (path === '/terms' || path === '/terms/') {
+      setPage('terms');
+    } else if (path === '/privacy' || path === '/privacy/') {
+      setPage('privacy');
+    } else if (path.startsWith('/blog')) {
+      setPage('blog');
     } else if (path.includes('/online-clipboard-text')) {
       setMode('create');
       setSelectedType('text');
+      setPage('home');
     } else if (path.includes('/online-clipboard-images')) {
       setMode('create');
       setSelectedType('image');
+      setPage('home');
     } else if (path.includes('/online-clipboard-files')) {
       setMode('create');
       setSelectedType('file');
+      setPage('home');
+    } else {
+      setPage('home');
     }
+  }, []);
+
+  // Listen for popstate (browser back/forward)
+  useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname;
+      if (path === '/terms' || path === '/terms/') {
+        setPage('terms');
+      } else if (path === '/privacy' || path === '/privacy/') {
+        setPage('privacy');
+      } else if (path.startsWith('/blog')) {
+        setPage('blog');
+      } else {
+        setPage('home');
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   const handleTypeChange = (type: 'text' | 'image' | 'file') => {
@@ -57,6 +93,7 @@ function App() {
 
   const handleNavigate = (newPage: string) => {
     if (newPage === 'faq') {
+      window.history.pushState({}, '', '/');
       setPage('home');
       setTimeout(() => {
         const faqSection = document.getElementById('faq-section');
@@ -64,6 +101,22 @@ function App() {
           faqSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       }, 100);
+    } else if (newPage === 'home') {
+      window.history.pushState({}, '', '/');
+      setPage('home');
+      window.scrollTo(0, 0);
+    } else if (newPage === 'blog') {
+      window.history.pushState({}, '', '/blog');
+      setPage('blog');
+      window.scrollTo(0, 0);
+    } else if (newPage === 'terms') {
+      window.history.pushState({}, '', '/terms');
+      setPage('terms');
+      window.scrollTo(0, 0);
+    } else if (newPage === 'privacy') {
+      window.history.pushState({}, '', '/privacy');
+      setPage('privacy');
+      window.scrollTo(0, 0);
     } else {
       setPage(newPage as Page);
       window.scrollTo(0, 0);
@@ -71,6 +124,7 @@ function App() {
   };
 
   const handleBackToHome = () => {
+    window.history.pushState({}, '', '/');
     setPage('home');
     window.scrollTo(0, 0);
   };
