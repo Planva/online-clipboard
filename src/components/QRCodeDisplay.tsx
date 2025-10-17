@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+// src/components/QRCodeDisplay.tsx
+import { useEffect, useState } from 'react';
 import { Download, QrCode } from 'lucide-react';
 import { generateQRCodeDataURL } from '../utils/qrcode';
 
@@ -7,81 +8,68 @@ interface QRCodeDisplayProps {
   label?: string;
 }
 
-export function QRCodeDisplay({ url, label = "Scan QR Code" }: QRCodeDisplayProps) {
-  const [qrDataURL, setQrDataURL] = useState<string | null>(null);
-  const [error, setError] = useState(false);
+export function QRCodeDisplay({ url, label = 'Scan QR Code' }: QRCodeDisplayProps) {
+  const [dataUrl, setDataUrl] = useState<string | null>(null);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
-    let mounted = true;
+    let cancelled = false;
 
-    const generateQR = async () => {
+    (async () => {
       try {
-        const dataURL = await generateQRCodeDataURL(url, 300);
-        if (mounted) {
-          setQrDataURL(dataURL);
-          setError(false);
-        }
-      } catch (err) {
-        console.error('Failed to generate QR code:', err);
-        if (mounted) {
-          setError(true);
+        setFailed(false);
+        const result = await generateQRCodeDataURL(url, 512);
+        if (!cancelled) setDataUrl(result);
+      } catch (e) {
+        console.error('Generate QR error:', e);
+        if (!cancelled) {
+          setFailed(true);
+          setDataUrl(null);
         }
       }
-    };
-
-    generateQR();
+    })();
 
     return () => {
-      mounted = false;
+      cancelled = true;
     };
   }, [url]);
 
   const handleDownload = () => {
-    if (!qrDataURL) return;
-
-    const link = document.createElement('a');
-    link.href = qrDataURL;
-    link.download = 'onlinclipboard-qrcode.png';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    if (!dataUrl) return;
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = 'share-qr.png';
+    a.click();
   };
-
-  if (error) {
-    return (
-      <div className="text-center p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
-        <QrCode className="w-12 h-12 mx-auto text-gray-400 mb-2" aria-hidden="true" />
-        <p className="text-sm text-gray-600 dark:text-gray-400">Unable to generate QR code</p>
-      </div>
-    );
-  }
-
-  if (!qrDataURL) {
-    return (
-      <div className="text-center p-4">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Generating QR code...</p>
-      </div>
-    );
-  }
 
   return (
     <div className="flex flex-col items-center">
-      <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{label}</p>
-      <div className="bg-white p-4 rounded-xl shadow-md border-2 border-gray-200 dark:border-gray-600">
-        <img
-          src={qrDataURL}
-          alt="QR Code to access shared content"
-          className="w-48 h-48 sm:w-64 sm:h-64"
-        />
+      <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">{label}</p>
+
+      <div className="p-3 bg-white rounded-xl shadow-sm">
+        {dataUrl && !failed ? (
+          <img
+            src={dataUrl}
+            alt="QR code"
+            className="w-48 h-48 sm:w-64 sm:h-64"
+            // 保证等比显示，避免被 CSS 拉伸导致识别率下降
+            style={{ imageRendering: 'pixelated' }}
+          />
+        ) : (
+          <div className="w-48 h-48 sm:w-64 sm:h-64 flex items-center justify-center bg-gray-50 rounded-xl">
+            <QrCode className="w-16 h-16 text-gray-400" aria-hidden="true" />
+          </div>
+        )}
       </div>
+
       <button
         onClick={handleDownload}
-        className="mt-4 flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+        disabled={!dataUrl || failed}
+        className="mt-3 flex items-center gap-2 text-sm text-blue-600 disabled:text-gray-400 hover:underline"
         aria-label="Download QR code"
       >
         <Download className="w-4 h-4" aria-hidden="true" />
-        <span>Download QR Code</span>
+        <span>下载二维码</span>
       </button>
     </div>
   );

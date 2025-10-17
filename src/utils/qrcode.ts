@@ -1,21 +1,29 @@
-import QRCode from 'qrcode';
+// src/utils/qrcode.ts
+import QRCode, { QRCodeToDataURLOptions } from 'qrcode';
 
-interface QRCodeOptions {
-  width?: number;
-  margin?: number;
-  errorCorrectionLevel?: 'L' | 'M' | 'Q' | 'H';
-  color?: {
-    dark?: string;
-    light?: string;
-  };
+// 确保传入的是绝对 URL（防止没有协议导致某些扫码器无法打开）
+function ensureAbsoluteUrl(input: string): string {
+  const value = input.trim();
+  if (/^https?:\/\//i.test(value)) return value;
+  if (typeof window !== 'undefined') {
+    const needsSlash = value && !value.startsWith('/');
+    return `${window.location.origin}${needsSlash ? '/' : ''}${value}`;
+  }
+  return value;
 }
 
-// Generate QR code as data URL
+/**
+ * 生成二维码的 DataURL（base64 PNG）
+ * @param text 要编码的文本/URL
+ * @param size 画布宽度（px）
+ */
 export async function generateQRCodeDataURL(
   text: string,
-  size: number = 300
+  size: number = 512
 ): Promise<string> {
-  const options: QRCodeOptions = {
+  const value = ensureAbsoluteUrl(text);
+
+  const options: QRCodeToDataURLOptions = {
     width: size,
     margin: 2,
     errorCorrectionLevel: 'M',
@@ -25,36 +33,6 @@ export async function generateQRCodeDataURL(
     },
   };
 
-  try {
-    return await QRCode.toDataURL(text, options);
-  } catch (error) {
-    console.error('Error generating QR code:', error);
-    throw new Error('Failed to generate QR code');
-  }
-}
-
-// Generate QR code canvas element
-export async function generateQRCodeCanvas(
-  text: string,
-  size: number = 300
-): Promise<HTMLCanvasElement> {
-  const canvas = document.createElement('canvas');
-
-  const options: QRCodeOptions = {
-    width: size,
-    margin: 2,
-    errorCorrectionLevel: 'M',
-    color: {
-      dark: '#000000',
-      light: '#FFFFFF',
-    },
-  };
-
-  try {
-    await QRCode.toCanvas(canvas, text, options);
-    return canvas;
-  } catch (error) {
-    console.error('Error generating QR code:', error);
-    throw new Error('Failed to generate QR code');
-  }
+  // 直接生成 DataURL，供 <img src="..."> 使用
+  return QRCode.toDataURL(value, options);
 }
