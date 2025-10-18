@@ -5,9 +5,10 @@ interface SEOProps {
   description: string;
   canonical?: string;
   ogType?: string;
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-export function SEO({ title, description, canonical, ogType = 'website' }: SEOProps) {
+export function SEO({ title, description, canonical, ogType = 'website', structuredData }: SEOProps) {
   useEffect(() => {
     // Update title
     document.title = title;
@@ -73,6 +74,34 @@ export function SEO({ title, description, canonical, ogType = 'website' }: SEOPr
     updateTwitterTag('twitter:description', description);
 
   }, [title, description, canonical, ogType]);
+
+  useEffect(() => {
+    const attrName = 'data-seo-structured';
+    const removeExistingScripts = () => {
+      const existing = document.querySelectorAll<HTMLScriptElement>(`script[${attrName}]`);
+      existing.forEach((script) => script.remove());
+    };
+
+    removeExistingScripts();
+
+    const dataItems = structuredData
+      ? Array.isArray(structuredData)
+        ? structuredData
+        : [structuredData]
+      : [];
+
+    dataItems.forEach((data) => {
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute(attrName, 'true');
+      script.text = JSON.stringify(data);
+      document.head.appendChild(script);
+    });
+
+    return () => {
+      removeExistingScripts();
+    };
+  }, [structuredData]);
 
   return null;
 }

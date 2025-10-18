@@ -13,8 +13,10 @@ export function Navigation({ currentPage, onNavigate }: NavigationProps) {
 
   const navItems = [
     { id: 'home', label: 'Home' },
+    { id: 'about', label: 'About' },
     { id: 'faq', label: 'FAQ' },
     { id: 'blog', label: 'Blog' },
+    { id: 'help', label: 'Help' },
   ];
 
   const themeOptions = [

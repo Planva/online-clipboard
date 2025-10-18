@@ -62,10 +62,10 @@ export function PrivacyPolicy({ onBack }: PrivacyPolicyProps) {
                 We implement strong security measures:
               </p>
               <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300 ml-4">
-                <li><strong>Encryption:</strong> All shared content is encrypted in storage</li>
-                <li><strong>Auto-Deletion:</strong> Content is automatically deleted after first access or 24 hours</li>
-                <li><strong>No Backups:</strong> Deleted content is permanently removed with no recovery option</li>
-                <li><strong>Secure Transmission:</strong> HTTPS encryption for all data transfers</li>
+                <li><strong>Cloudflare storage:</strong> Shares are stored on Cloudflare D1 and R2 and only retrievable through our Worker</li>
+                <li><strong>Auto-deletion:</strong> Content is automatically deleted after first access or 24 hours</li>
+                <li><strong>No backups:</strong> Deleted content is permanently removed with no recovery option</li>
+                <li><strong>Secure transmission:</strong> HTTPS encryption protects all data transfers</li>
               </ul>
             </section>
 
@@ -94,8 +94,8 @@ export function PrivacyPolicy({ onBack }: PrivacyPolicyProps) {
                 Our service uses the following third-party providers:
               </p>
               <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300 ml-4">
-                <li><strong>Supabase:</strong> Database and file storage (with encryption)</li>
-                <li><strong>Hosting Provider:</strong> Service infrastructure</li>
+                <li><strong>Cloudflare:</strong> Provides D1 database, R2 object storage, KV cache, Workers runtime, and global CDN</li>
+                <li><strong>Analytics & monitoring:</strong> Internal logging within Cloudflare Workers for reliability and abuse prevention</li>
               </ul>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mt-3">
                 These providers have their own privacy policies and security measures.

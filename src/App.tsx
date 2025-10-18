@@ -11,11 +11,111 @@ import { TermsOfService } from './pages/TermsOfService';
 import { PrivacyPolicy } from './pages/PrivacyPolicy';
 import { Blog } from './pages/Blog';
 import { FAQSection } from './components/FAQSection';
+import { About } from './pages/About';
+import { HelpCenter } from './pages/HelpCenter';
+import { SecurityPractices } from './pages/SecurityPractices';
+import { FAQ_ITEMS, type FAQEntry } from './data/faq';
 import { SEO } from './components/SEO';
 
 type Mode = 'create' | 'retrieve';
-type Page = 'home' | 'all-reviews' | 'terms' | 'privacy' | 'faq' | 'blog';
+type Page = 'home' | 'all-reviews' | 'terms' | 'privacy' | 'faq' | 'blog' | 'about' | 'help' | 'security';
 type ContentType = 'text' | 'image' | 'file' | null;
+
+const SITE_URL = 'https://onlinclipboard.com';
+const HOME_DESCRIPTION =
+  'Free online clipboard to share text, images, files & PDFs across devices. No login required. Self-destruct links for secure temporary sharing. Copy-paste online.';
+
+const HOME_STRUCTURED_DATA = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${SITE_URL}/#website`,
+    name: 'OnlinClipboard',
+    url: `${SITE_URL}/`,
+    description: HOME_DESCRIPTION,
+    inLanguage: 'en-US',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'OnlinClipboard',
+    applicationCategory: 'UtilityApplication',
+    operatingSystem: 'Web Browser',
+    url: `${SITE_URL}/`,
+    description: 'Free online clipboard to share text, images, and files across devices with self-destruct links.',
+    isAccessibleForFree: true,
+  },
+];
+
+const TERMS_STRUCTURED_DATA = {
+  '@context': 'https://schema.org',
+  '@type': 'TermsOfService',
+  name: 'Terms of Service | OnlinClipboard',
+  description:
+    'Terms of service for using OnlinClipboard, covering temporary clipboard shares, file uploads, and security policies.',
+  url: `${SITE_URL}/terms`,
+  inLanguage: 'en-US',
+  mainEntityOfPage: `${SITE_URL}/terms`,
+};
+
+const PRIVACY_STRUCTURED_DATA = {
+  '@context': 'https://schema.org',
+  '@type': 'PrivacyPolicy',
+  name: 'Privacy Policy | OnlinClipboard',
+  description:
+    'Privacy policy detailing how OnlinClipboard handles shared content, automatic deletion, and data security practices.',
+  url: `${SITE_URL}/privacy`,
+  inLanguage: 'en-US',
+  mainEntityOfPage: `${SITE_URL}/privacy`,
+};
+
+const FAQ_STRUCTURED_DATA = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  name: 'OnlinClipboard Frequently Asked Questions',
+  description:
+    'Answers to common questions about sharing text, images, and files securely with the OnlinClipboard online clipboard.',
+  url: `${SITE_URL}/faq`,
+  inLanguage: 'en-US',
+  mainEntity: FAQ_ITEMS.map((faq: FAQEntry) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
+};
+
+const ABOUT_STRUCTURED_DATA = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: 'About OnlinClipboard',
+  description:
+    'Learn who operates OnlinClipboard, the technology stack behind the service, and how one-time shares are processed.',
+  url: `${SITE_URL}/about`,
+  inLanguage: 'en-US',
+};
+
+const HELP_STRUCTURED_DATA = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'OnlinClipboard Help Center',
+  description:
+    'Step-by-step instructions, troubleshooting tips, and acceptable use guidelines for the OnlinClipboard sharing tool.',
+  url: `${SITE_URL}/help`,
+  inLanguage: 'en-US',
+};
+
+const SECURITY_STRUCTURED_DATA = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'OnlinClipboard Security & Data Handling',
+  description:
+    'Details about data retention, deletion schedules, and infrastructure choices that keep OnlinClipboard shares temporary.',
+  url: `${SITE_URL}/security`,
+  inLanguage: 'en-US',
+};
 
 function App() {
   const [mode, setMode] = useState<Mode>('create');
@@ -39,6 +139,12 @@ function App() {
       setPage('terms');
     } else if (path === '/privacy' || path === '/privacy/') {
       setPage('privacy');
+    } else if (path === '/about' || path === '/about/') {
+      setPage('about');
+    } else if (path === '/help' || path === '/help/') {
+      setPage('help');
+    } else if (path === '/security' || path === '/security/') {
+      setPage('security');
     } else if (path.startsWith('/blog')) {
       setPage('blog');
     } else if (path.includes('/online-clipboard-text')) {
@@ -66,6 +172,12 @@ function App() {
         setPage('terms');
       } else if (path === '/privacy' || path === '/privacy/') {
         setPage('privacy');
+      } else if (path === '/about' || path === '/about/') {
+        setPage('about');
+      } else if (path === '/help' || path === '/help/') {
+        setPage('help');
+      } else if (path === '/security' || path === '/security/') {
+        setPage('security');
       } else if (path.startsWith('/blog')) {
         setPage('blog');
       } else {
@@ -117,6 +229,18 @@ function App() {
       window.history.pushState({}, '', '/privacy');
       setPage('privacy');
       window.scrollTo(0, 0);
+    } else if (newPage === 'about') {
+      window.history.pushState({}, '', '/about');
+      setPage('about');
+      window.scrollTo(0, 0);
+    } else if (newPage === 'help') {
+      window.history.pushState({}, '', '/help');
+      setPage('help');
+      window.scrollTo(0, 0);
+    } else if (newPage === 'security') {
+      window.history.pushState({}, '', '/security');
+      setPage('security');
+      window.scrollTo(0, 0);
     } else {
       setPage(newPage as Page);
       window.scrollTo(0, 0);
@@ -136,6 +260,7 @@ function App() {
           title="Terms of Service - OnlinClipboard"
           description="Terms of service for OnlinClipboard. Free online clipboard for temporary file sharing, text sharing, and cross-device clipboard sync."
           canonical="https://onlinclipboard.com/terms"
+          structuredData={TERMS_STRUCTURED_DATA}
         />
         <Navigation currentPage={page} onNavigate={handleNavigate} />
         <TermsOfService onBack={handleBackToHome} />
@@ -149,11 +274,60 @@ function App() {
       <>
         <SEO
           title="Privacy Policy - OnlinClipboard"
-          description="Privacy policy for OnlinClipboard. Learn how we protect your data with self-destruct links, encrypted storage, and no-login anonymous sharing."
+          description="Privacy policy for OnlinClipboard. Learn how we protect your data with self-destruct links, time-limited retention, and no-login anonymous sharing."
           canonical="https://onlinclipboard.com/privacy"
+          structuredData={PRIVACY_STRUCTURED_DATA}
         />
         <Navigation currentPage={page} onNavigate={handleNavigate} />
         <PrivacyPolicy onBack={handleBackToHome} />
+        <Footer onNavigate={handleNavigate} />
+      </>
+    );
+  }
+
+  if (page === 'about') {
+    return (
+      <>
+        <SEO
+          title="About OnlinClipboard"
+          description="Find out who maintains OnlinClipboard, how the service works, and what to expect when creating one-time shares."
+          canonical="https://onlinclipboard.com/about"
+          structuredData={ABOUT_STRUCTURED_DATA}
+        />
+        <Navigation currentPage={page} onNavigate={handleNavigate} />
+        <About onBack={handleBackToHome} />
+        <Footer onNavigate={handleNavigate} />
+      </>
+    );
+  }
+
+  if (page === 'help') {
+    return (
+      <>
+        <SEO
+          title="Help Center - OnlinClipboard Support"
+          description="Step-by-step instructions, troubleshooting tips, and acceptable use guidance for OnlinClipboard."
+          canonical="https://onlinclipboard.com/help"
+          structuredData={HELP_STRUCTURED_DATA}
+        />
+        <Navigation currentPage={page} onNavigate={handleNavigate} />
+        <HelpCenter onBack={handleBackToHome} />
+        <Footer onNavigate={handleNavigate} />
+      </>
+    );
+  }
+
+  if (page === 'security') {
+    return (
+      <>
+        <SEO
+          title="Security & Data Handling - OnlinClipboard"
+          description="Understand how OnlinClipboard stores shares, when data is deleted, and the responsibilities of every user."
+          canonical="https://onlinclipboard.com/security"
+          structuredData={SECURITY_STRUCTURED_DATA}
+        />
+        <Navigation currentPage={page} onNavigate={handleNavigate} />
+        <SecurityPractices onBack={handleBackToHome} />
         <Footer onNavigate={handleNavigate} />
       </>
     );
@@ -166,6 +340,7 @@ function App() {
           title="FAQ - Online Clipboard Questions Answered"
           description="Frequently asked questions about OnlinClipboard. Learn how to share text online, paste images, transfer files, and use clipboard sync across devices."
           canonical="https://onlinclipboard.com/faq"
+          structuredData={FAQ_STRUCTURED_DATA}
         />
         <Navigation currentPage={page} onNavigate={handleNavigate} />
         <FAQSection fullPage={true} onBack={handleBackToHome} />
@@ -177,11 +352,6 @@ function App() {
   if (page === 'blog') {
     return (
       <>
-        <SEO
-          title="Blog - Online Clipboard Tips & Guides"
-          description="Learn tips and tricks for using online clipboard tools, sharing files securely, and syncing clipboard content between devices."
-          canonical="https://onlinclipboard.com/blog"
-        />
         <Navigation currentPage={page} onNavigate={handleNavigate} />
         <Blog onBack={handleBackToHome} />
         <Footer onNavigate={handleNavigate} />
@@ -195,6 +365,7 @@ function App() {
         title="OnlinClipboard - Free Online Clipboard for Text & Files"
         description="Free online clipboard to share text, images, files & PDFs across devices. No login required. Self-destruct links for secure temporary sharing. Copy-paste online."
         canonical="https://onlinclipboard.com/"
+        structuredData={HOME_STRUCTURED_DATA}
       />
       <Navigation currentPage={page} onNavigate={handleNavigate} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">

@@ -19,7 +19,7 @@ export function Footer({ onNavigate }: FooterProps) {
   return (
     <footer className="bg-gray-900 text-gray-300 pt-12 pb-8 sm:pt-12 sm:pb-12">
       <div className="container mx-auto px-3 sm:px-4 py-8 sm:py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-8 mb-6 sm:mb-8">
           <div>
             <h3 className="text-white font-semibold mb-3 text-sm sm:text-base">Legal</h3>
             <ul className="space-y-2 text-sm sm:text-base">
@@ -37,6 +37,36 @@ export function Footer({ onNavigate }: FooterProps) {
                   className="hover:text-white transition-colors"
                 >
                   Privacy Policy
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-white font-semibold mb-3 text-sm sm:text-base">Resources</h3>
+            <ul className="space-y-2 text-sm sm:text-base">
+              <li>
+                <button
+                  onClick={() => onNavigate('about')}
+                  className="hover:text-white transition-colors"
+                >
+                  About
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => onNavigate('help')}
+                  className="hover:text-white transition-colors"
+                >
+                  Help Center
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => onNavigate('security')}
+                  className="hover:text-white transition-colors"
+                >
+                  Security &amp; Data Handling
                 </button>
               </li>
             </ul>
@@ -112,7 +142,7 @@ export function Footer({ onNavigate }: FooterProps) {
         <div className="border-t border-gray-800 pt-6 sm:pt-8 text-center text-xs sm:text-sm">
           <p>&copy; {new Date().getFullYear()} onlinclipboard.com All rights reserved.</p>
           <p className="mt-2 text-gray-400">
-          All shares are encrypted and removed after 24 hours | One-time access, then instantly wiped for privacy.
+            All shares are removed after 24 hours or once retrieved | One-time access plus limited retention for privacy.
           </p>
         </div>
       </div>
