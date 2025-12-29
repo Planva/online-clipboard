@@ -10,6 +10,8 @@ export function Footer({ onNavigate }: FooterProps) {
 
   const links = [
     { name: 'AI manga translation', url: 'https://aimangatranslate.com' },
+    { name: 'PDF Translate', url: 'https://pdf-translation.com' },
+    { name: 'Digital Planner', url: 'https://digiplanpro.com' },
     { name: 'Tat Test', url: 'https://www.tat-test.com' },
     { name: 'YouTube Thumbnail Tester', url: 'https://www.thumbnail-tester.com' },
   ];
